@@ -5,22 +5,51 @@ using UnityEngine;
 public class EnemyMover : MonoBehaviour
 {
     [SerializeField] List<Waypoint> path = new List<Waypoint>();
-    [SerializeField] float waitTime = 1f;
-
+    [SerializeField] [Range(0f,5f)]float speed = 1f;
+    [SerializeField] float rotationSpeed = 1f;
     // Start is called before the first frame update
     void Start()
     {
        StartCoroutine(FollowPath());
     }
 
+    //IEnumerator FollowPath()
+    //{
+    //    foreach (Waypoint waypoint in path)
+    //    {
+    //        Vector3 startPos = transform.position;
+    //        Vector3 endPos = waypoint.transform.position;
+    //        float travelPercent = 0f;
+    //        transform.LookAt(endPos);
+    //        while(travelPercent < 1f)
+    //        {
+    //            travelPercent += Time.deltaTime;
+    //            transform.position = Vector3.Lerp(startPos, endPos, travelPercent);
+    //            yield return new WaitForEndOfFrame();
+    //        }
+
+
+    //    }
+    //}
+
     IEnumerator FollowPath()
     {
         foreach (Waypoint waypoint in path)
         {
-            transform.position = waypoint.transform.position;
-            yield return new WaitForSeconds(waitTime);
+            Vector3 startPos = transform.position;
+            Vector3 endPos = waypoint.transform.position;
+            Quaternion startRotation = transform.rotation;//new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+            Quaternion endRotation = Quaternion.LookRotation(endPos - startPos);
+            float travelPercent = 0f;
+            while (travelPercent < 1f)
+            {
+                transform.position = Vector3.Lerp(startPos, endPos, travelPercent);
+                transform.rotation = Quaternion.Lerp(startRotation, endRotation, Mathf.Clamp(travelPercent * rotationSpeed, 0, 1));
+                travelPercent += Time.deltaTime * speed;
+                yield return new WaitForEndOfFrame();
+            }
         }
     }
-       
+
 
 }
