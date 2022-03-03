@@ -696,7 +696,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enemy: {fileID: 5040643765344069697, guid: b940df629b09f434dbb9fd487257db6c, type: 3}
-  waitTime: 5
+  poolSize: 5
+  waitTime: 3
 --- !u!4 &918712495
 Transform:
   m_ObjectHideFlags: 0
