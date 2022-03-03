@@ -6,6 +6,7 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] int MaxHitPoints = 5;
     int currenthitpoints = 0;
+    Enemy enemy;
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -13,9 +14,9 @@ public class EnemyHealth : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        enemy = GetComponent<Enemy>();
     }
     private void OnParticleCollision(GameObject other)
     {
@@ -28,6 +29,7 @@ public class EnemyHealth : MonoBehaviour
         if (currenthitpoints <= 0)
         {
             gameObject.SetActive(false);
+            enemy.RewardGold();
         }
     }
 }
