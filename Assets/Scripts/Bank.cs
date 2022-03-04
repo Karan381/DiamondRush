@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Bank : MonoBehaviour
 {
     [SerializeField] int startingBalance = 150;
     
     [SerializeField]int currentBalance;
+
+    [SerializeField] float timeDelay = 1f;
 
     private void Awake()
     {
@@ -22,7 +25,17 @@ public class Bank : MonoBehaviour
     public void Withdraw(int Amount)
     {
         currentBalance -= Mathf.Abs(Amount);
+
+        if(currentBalance < 0)
+        {
+            Invoke("ReloadScene", timeDelay);
+            
+        }
     }
     // Start is called before the first frame update
-
+    void ReloadScene()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.buildIndex);
+    }
 }
